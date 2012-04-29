@@ -19,7 +19,11 @@ abstract class npOptimizerCombinableBase extends npOptimizerBase
   public function configure(array $configuration = array())
   {
     parent::configure($configuration);
-    
+
+    if (isset($configuration['replaceStrings'])) {
+      $this->replaceStrings = $configuration['replaceStrings'];
+    }
+
     if (isset($configuration['files']))
     {
       parent::setFiles($configuration['files']);

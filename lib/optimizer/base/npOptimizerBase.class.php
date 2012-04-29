@@ -16,8 +16,9 @@ abstract class npOptimizerBase
     $driverName    = null,
     $dispatcher    = null,
     $files         = array(),
-    $replaceFiles  = false;
-  
+    $replaceFiles  = false,
+    $replaceStrings = array();
+
   /**
    * Public constructor
    *
@@ -154,6 +155,11 @@ abstract class npOptimizerBase
     foreach ($this->files as $file)
     {
       $results[$file] = $this->optimizeFile($file);
+
+      if (isset($this->replaceStrings[$file])) {
+        $results[$file]['optimizedContent'] =
+          strtr($results[$file]['optimizedContent'], $this->replaceStrings[$file]);
+      }
     }
     
     return array('statistics' => $results);
@@ -191,6 +197,11 @@ abstract class npOptimizerBase
       if (!file_exists($file) && !file_exists($files[$i] = $this->getAssetFilepath($file)))
       {
         throw new RuntimeException(sprintf('File "%s" does not exist or cannot be resolved (tried "%s" as well)', $file, $files[$i]));
+      }
+
+      if ($file != $files[$i] && isset($this->replaceStrings[$file])) {
+        $this->replaceStrings[$files[$i]] = $this->replaceStrings[$file];
+        unset($this->replaceStrings[$file]);
       }
     }
     
