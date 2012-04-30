@@ -113,7 +113,7 @@ class npAssetsOptimizerService
    *
    * @param  sfWebresponse  $response
    */
-  public function replaceJavascripts(sfWebResponse $response)
+  public function replaceJavascripts(sfWebResponse $response, array $options = array())
   {
     if (is_null($javascriptOptimizer = $this->getOptimizer('javascript')))
 	  {
@@ -124,8 +124,8 @@ class npAssetsOptimizerService
     {
       $response->removeJavascript($file);
     }
-    
-    $response->addJavascript($javascriptOptimizer->getOptimizedFileWebPath(), 'first');
+
+    $response->addJavascript($javascriptOptimizer->getOptimizedFileWebPath(), 'first', $options);
   }
   
   /**
@@ -134,7 +134,7 @@ class npAssetsOptimizerService
    *
    * @param  sfWebresponse  $response
    */
-  public function replaceStylesheets(sfWebResponse $response)
+  public function replaceStylesheets(sfWebResponse $response, array $options = array())
   {
     if (is_null($stylesheetOptimizer = $this->getOptimizer('stylesheet')))
 	  {
@@ -145,8 +145,8 @@ class npAssetsOptimizerService
     {
       $response->removeStylesheet($file);
     }
-    
-    $response->addStylesheet($stylesheetOptimizer->getOptimizedFileWebPath(), 'first');
+
+    $response->addStylesheet($stylesheetOptimizer->getOptimizedFileWebPath(), 'first', $options);
   }
   
   /**
